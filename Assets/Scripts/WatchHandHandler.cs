@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WatchHandHandler : MonoBehaviour
 {
-    public Transform WatchFace;
+    //public Transform WatchFace;
     public Transform HourHand;
     public Transform MinuteHand;
     public Transform SecondHand;

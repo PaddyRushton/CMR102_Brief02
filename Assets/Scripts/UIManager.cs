@@ -10,31 +10,24 @@ public class UIManager : MonoBehaviour
     public Text playerOneScoreText; // a reference to the text we'll be modifying
     public Color playerOneColour; // a reference to the text colour we'll be using
 
-    // Player Two Variables
-    public GameObject playerTwoCanvas; // a reference to the players goal score canvas
-    public Text playerTwoScoreText; // a reference to the text we'll be modifying
-    public Color playerTwoColour; // a reference to the text colour we'll be using
-
-
     /// <summary>
     /// Hide the canvas at the start of the game until the ball has been spawned
     /// </summary>
     /// <param name="displayScores"></param>
-public void DisplayScores(bool displayScores)
+public void DisplayBreakfastTime(bool displayScores)
     {
-        if(playerOneCanvas == null || playerTwoCanvas == null)
+        if(playerOneCanvas == null)
         {
             Debug.LogError("No canvas has been assigned for this player");
             return;
         }
 
         playerOneCanvas.SetActive(displayScores);
-        playerTwoCanvas.SetActive(displayScores);
     }
 
-    public void UpdateScores(int playerOneScore, int playerTwoScore)
+    public void UpdateScores(int playerOneScore)
     {
-        if(playerOneScoreText == null || playerTwoScoreText == null)
+        if(playerOneScoreText == null)
         {
             Debug.LogError("No text has been assigned for this player");
             return;
@@ -42,9 +35,6 @@ public void DisplayScores(bool displayScores)
 
         playerOneScoreText.color = playerOneColour; // change the text colour to the player colour
         playerOneScoreText.text = playerOneScore.ToString(); // set the text to display the score
-
-        playerTwoScoreText.color = playerTwoColour; // change the text colour to the player colour
-        playerTwoScoreText.text = playerTwoScore.ToString(); // set the text to display the score
 
     }
 }

@@ -7,79 +7,68 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public Transform soccerField; /// a reference to our soccer field
+    public Transform watchFace; /// a reference to our soccer field
     public Vector3 moveArea; /// the size of our area where we can move
     public Transform arCamera; // reference to our AR Camera
 
-    public GameObject soccerBallPrefab; // a reference to the soccer ball in our scene
-    private GameObject currentSoccerBallInstance; // the current soccer ball that's been spawned in
+    public GameObject croissantPrefab; // a reference to the croissant prefab
+    private GameObject currentCroissant; // the current croissant that's been spawned in
     public Transform arContentParent; // reference to the overall parent of the AR Content...
 
-    public int playerOneScore;
-    public int playerTwoScore;
+    public Vector3 croissantLocation;
+    public string breakfastTime;
 
     public UIManager UIManager; // reference to our UI Manager
 
     //public AudioManager audioManager; // reference to our audio manager
 
-    private bool areCharactersRunningAway = false; // are any characters currently running away?
-
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("New RandomPosition of:" + ReturnRandomPositionOnField());
-        playerOneScore = 0;
-        playerTwoScore = 0;
-        UIManager.DisplayScores(false); // hide our canvasses to start with
-        UIManager.UpdateScores(playerOneScore, playerTwoScore); // update our players scores
+        UIManager.DisplayBreakfastTime(false); // hide our canvasses to start with
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        GetBreakfastTime();
     }
 
+
+    
     /// <summary>
-    /// Increase the passed in players score by 1! :D
+    /// Spawns in a new croissant based on the position provided. If a croissant already exists in the world, just move it to that new position
     /// </summary>
-    /// <param name="playerNumber"></param>
-    public void IncreasePlayerScore(int playerNumber)
+    /// <param name="positionToSpawn"></param>
+    public void SpawnBreakfast(Vector3 positionToSpawn)
     {
-        if(playerNumber == 1)
+        // if the croissant isn't spawned in the world yet
+        if(currentCroissant == null)
         {
-            playerOneScore++;
+            Debug.Log("Croissant is Here!!!!");
+            //spawn in and store a reference to our croissant and parent it to our arContentParent (in this case our "gameWorld")
+            currentCroissant = Instantiate(croissantPrefab, positionToSpawn, croissantPrefab.transform.rotation, arContentParent);
+            currentCroissant.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the croissant to 0
+            currentCroissant.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the croissant to 0
+            //AlertCharactersToSoccerBallSpawningIn(); // tell everyone the croissant has been spawned!
         }
-        else if (playerNumber == 2)
+        else
         {
-            playerTwoScore++;
+            // if the croissant already exists, lets move it
+            currentCroissant.transform.position = positionToSpawn; // move our existing croisant to the dedicated spawn position
+            currentCroissant.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the croissant to 0
+            currentCroissant.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the croissant to 0
         }
-        ResetSoccerBall();
-        UIManager.UpdateScores(playerOneScore, playerTwoScore); // updates the score in the UIManager class to show the current value
     }
 
 
-    private void ResetSoccerBall()
+    public void GetBreakfastTime()
     {
-        currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // reset the velocity of the ball to 0
-        currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // reset the angular velocity to 0
-        currentSoccerBallInstance.transform.position = ReturnRandomPositionOnField(); // reset the position of ball to somewhere random
+        croissantLocation = currentCroissant.GetComponent<Rigidbody>().position; // sets croissant location to the current location in spac eof the croissant
+        Debug.Log(croissantLocation);
+
+       // breakfastTime = ;
     }
-
-
-
-    //Summary
-    //Returns a random position within our move area
-   //Summary
-       public Vector3 ReturnRandomPositionOnField()
-    {
-        float xPosition = Random.Range(-moveArea.x / 2, moveArea.x / 2); /// gives us a random number between negative moveArea x and positive moveArea x
-        float yPosition = soccerField.position.y;// our soccer field's y transform position
-        float zPosition = Random.Range(-moveArea.z / 2, moveArea.z / 2); /// gives us a random number between negative moveArea z and positive moveArea z
-
-        return new Vector3(xPosition, yPosition, zPosition);
-    }
-
 
 
 
@@ -89,15 +78,16 @@ public class GameManager : MonoBehaviour
     private void OnDrawGizmosSelected()
 
     {
-        //If the user hasn't put in a soccer field, ignore this function.
-        if (soccerField == null)
+        //If the user hasn't put in a watchface, ignore this function.
+        if (watchFace == null)
         {
             return;
         }
         Gizmos.color = Color.red; // Sets my Gizmo to red.
-        Gizmos.DrawCube(soccerField.position + new Vector3(0,0.1f,0), moveArea); // draws a cube at the soccer fields position at the size of our'move area'.
+        Gizmos.DrawCube(watchFace.position + new Vector3(0, 0.1f, 0), moveArea); // draws a cube at the watchface position at the size of our'move area'.
     }
-       
+
+
     /// <summary>
     /// returns true or false if we're too close or not close enough to the camera
     /// </summary>
@@ -106,7 +96,7 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public bool IsCharacterTooCloseToCamera(Transform character, float distanceThresholdOfPlayer)
     {
-        if(Vector3.Distance(arCamera.position, character.position) <= distanceThresholdOfPlayer)
+        if (Vector3.Distance(arCamera.position, character.position) <= distanceThresholdOfPlayer)
         {
             // returns true if we're too close!
             return true;
@@ -117,36 +107,6 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
-
-    /// <summary>
-    /// Spawns in a new soccer ball based on the position provided. If a soccer ball already exists in the world, just move it to that new position
-    /// </summary>
-    /// <param name="positionToSpawn"></param>
-    public void SpawnObject(Vector3 positionToSpawn)
-    {
-        if (soccerBallPrefab == null)
-        {
-            Debug.LogError("something's wrong! There's no soccer ball assigned in the inspector!");
-            return;
-        }
-        // if the soccer ball isn't spawned in the world yet
-        if(currentSoccerBallInstance == null)
-        {
-            //spawn in and store a reference to our soccer ball and parent it to our arContentParent (in this case our "gameWorld")
-            currentSoccerBallInstance = Instantiate(soccerBallPrefab, positionToSpawn, soccerBallPrefab.transform.rotation, arContentParent);
-            currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the soccer ball to 0
-            currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the soccer ball to 0
-            //AlertCharactersToSoccerBallSpawningIn(); // tell everyone the ball has been spawned!
-        }
-        else
-        {
-            // if the soccer ball already exists, lets move it
-            currentSoccerBallInstance.transform.position = positionToSpawn; // move our existing soccer ball to the dedicated spawn position
-            currentSoccerBallInstance.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the soccer ball to 0
-            currentSoccerBallInstance.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the soccer ball to 0
-        }
-    }
-
 
     /// <summary>
     /// Finds all characters in scene, loops through them and tells them that there's a soccer ball

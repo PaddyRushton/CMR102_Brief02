@@ -29,13 +29,15 @@ public class MouseHandler : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(0)) // get computer mouse or touch input
         {
+            Debug.Log("Mouse click YAY!");
             RaycastHit hit; // data stored on what we've hit
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition); // draws a ray from my camera to my computer mouse position
 
             //do our raycast, if we hit something that blocks the ray, store the data as 'hit'
             if(Physics.Raycast(ray, out hit, layersToHit))
             {
-                gameManager.SpawnObject(hit.point); // at the point in the world where the ray has hit, spawn our soccerball, or move it if it already exists!
+            gameManager.SpawnBreakfast(hit.point); // at the point in the world where the ray has hit, spawn our soccerball, or move it if it already exists!
+
             }
         }
     }
