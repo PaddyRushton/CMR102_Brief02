@@ -9,12 +9,6 @@ public class MouseHandler : MonoBehaviour
 
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -36,8 +30,8 @@ public class MouseHandler : MonoBehaviour
             //do our raycast, if we hit something that blocks the ray, store the data as 'hit'
             if(Physics.Raycast(ray, out hit, layersToHit))
             {
-            gameManager.SpawnBreakfast(hit.point); // at the point in the world where the ray has hit, spawn our soccerball, or move it if it already exists!
-
+                Debug.Log("Ray Hit Huzzah!");
+            CroissantHandler.Instance.SpawnBreakfast(hit.point); // at the point in the world where the ray has hit, spawn our soccerball, or move it if it already exists!
             }
         }
     }
