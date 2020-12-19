@@ -6,13 +6,17 @@ using UnityEngine.UI;
 public class CroissantHandler : MonoBehaviour
 {
     public GameObject croissantPrefab;  // a reference to the croissant prefab
-    public GameObject currentCroissant; // the current croissant that's been spawned in
+    public GameObject currentCroissant;  // the current croissant that's been spawned in
+    //public List<GameObject> food;
+
+    
+
     public Transform arContentParent;   // reference to the overall parent of the AR Content.
-    private Vector3 croissantLocation;   // stores a vector 3 of the croissants location
     public string breakfastTime;        // Stores the value of breakfast time
     public GameObject croissantCanvas;  // a reference to the players goal score canvas
     public Text croissantText;          // a reference to the text we'll be modifying
     public Color croissantTextColour;   // a reference to the text colour we'll be using
+
     public static CroissantHandler Instance { get; private set; }
 
     void Awake()
@@ -39,7 +43,12 @@ public class CroissantHandler : MonoBehaviour
         {
             Debug.Log("Croissant is Here!!!!");
             //spawn in and store a reference to our croissant and parent it to our arContentParent (in this case our "gameWorld")
-            currentCroissant = Instantiate(croissantPrefab, positionToSpawn, croissantPrefab.transform.rotation, arContentParent);
+            
+            //GameObject apple = Instantiate(croissantPrefab, positionToSpawn, croissantPrefab.transform.rotation, arContentParent);
+            //food.Add(apple);
+            //food[0].transform.position = ;
+
+            currentCroissant= Instantiate(croissantPrefab, positionToSpawn, croissantPrefab.transform.rotation, arContentParent);
             currentCroissant.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the croissant to 0
             currentCroissant.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the croissant to 0
             croissantCanvas = GameObject.Find("Croissant Canvas");
@@ -52,14 +61,13 @@ public class CroissantHandler : MonoBehaviour
             currentCroissant.GetComponent<Rigidbody>().velocity = Vector3.zero; // sets the velocity of the croissant to 0
             currentCroissant.GetComponent<Rigidbody>().angularVelocity = Vector3.zero; // sets the angular velocity of the croissant to 0
         }
-        croissantLocation = currentCroissant.GetComponent<Rigidbody>().position; // sets croissantLocation to the current location in space of the croissant
-        UpdateBreakfastTime();
+         UpdateBreakfastTime();
     }
 
     public void UpdateBreakfastTime()
     {
         croissantText.color = croissantTextColour; // change the text colour to the player colour
-        Quaternion croissantAngle = Quaternion.LookRotation(croissantLocation);
+        Quaternion croissantAngle = Quaternion.LookRotation(currentCroissant.transform.position);
         
         float value = (croissantAngle.eulerAngles.y)*2;
         int hours = (int)value / 60;
