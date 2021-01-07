@@ -11,14 +11,18 @@ public class GameManager : MonoBehaviour
     public Vector3 moveArea; /// the size of our area where we can move
     public Transform arCamera; // reference to our AR Camera
     public UIManager UIManager; // reference to our UI Manager
+    public GameObject sun;
+
+
     //public AudioManager audioManager; // reference to our audio manager
+    public AudioSource audioSource;
 
 
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 

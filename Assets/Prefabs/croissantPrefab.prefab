@@ -73,7 +73,7 @@ MonoBehaviour:
     m_MaxSize: 300
     m_Alignment: 4
     m_AlignByGeometry: 0
-    m_RichText: 0
+    m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 1612838152}
   - component: {fileID: 1612838151}
   - component: {fileID: 1612838150}
+  - component: {fileID: 4773913622857589466}
   m_Layer: 5
   m_Name: Croissant Canvas
   m_TagString: Untagged
@@ -177,6 +178,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &4773913622857589466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612838149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdb7e1ba31e185a4eb000d0a4d0be84a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4548148379583603040
 GameObject:
   m_ObjectHideFlags: 0
