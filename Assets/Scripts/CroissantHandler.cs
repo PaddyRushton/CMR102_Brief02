@@ -68,12 +68,17 @@ public class CroissantHandler : MonoBehaviour
     {
         croissantText.color = croissantTextColour; // change the text colour to the player colour
         Quaternion croissantAngle = Quaternion.LookRotation(currentCroissant.transform.position);
-        
+        croissantAngle.z = 0;
+
+
         float value = (croissantAngle.eulerAngles.y)*2;
         int hours = (int)value / 60;
         int minutes = (int)value - 60 * hours;
         breakfastTime = string.Format("{0:00}:{1:00}", hours, minutes);
-        croissantText.text = breakfastTime; // set the text to display the correct time
+        croissantText.text = "Breakfast time: \n " + breakfastTime + "am"; // set the text to display the correct time
+
         Debug.Log("bananas");
+
+
     }
 }
